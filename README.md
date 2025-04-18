@@ -1,9 +1,9 @@
-# SkyReaper
+# WRAITH
 Autonomous MAVLink Drone Interdiction System
 
-**SkyReaper** is a Raspberry Pi 5–powered autonomous MAVLink hunter-killer platform. It passively listens for drone telemetry and command traffic (MAVLink protocol), then triggers payloads on detection—executing GPS spoofing, mode spamming, and forced reboot injections against PX4-based flight controllers.
+**WRAITH** is a Raspberry Pi 5-powered autonomous MAVLink hunter-killer platform. It passively listens for drone telemetry and command traffic (MAVLink protocol), then triggers payloads on detection--executing GPS spoofing, mode spamming, and forced reboot injections against PX4-based flight controllers.
 
-![SkyReaper Running in Terminal](../media/20250418_002425.jpg)
+![WRAITH Running in Terminal](../media/20250418_002425.jpg)
 ![Script Execution Start](../media/20250418_002505.jpg)
 ![Payload Trigger in Action](../media/20250418_002538.jpg)
 ![PX4 Comm Link Setup in QGC](../media/20250418_002559.jpg)
@@ -11,7 +11,7 @@ Autonomous MAVLink Drone Interdiction System
 
 ---
 
-## 🚀 Features
+##  Features
 - Passive MAVLink heartbeat detection
 - CLI-based attack engine (`px4_attack_cli.py`)
 - GPS spoofing, reboot, and mode-spam payloads
@@ -22,19 +22,19 @@ Autonomous MAVLink Drone Interdiction System
 
 ---
 
-## 🧱 Project Structure
+##  Project Structure
 ```
 /home/kali/
-├── mav_env/                  # Python virtual environment (pymavlink lives here)
-├── mav_hunter/
-│   ├── px4_attack_cli.py     # Aggressive MAVLink payload script
-│   ├── hunter_listener.py    # Passive detector + payload launcher
-│   └── logs/                 # Logs each event & payload outcome
+ mav_env/                  # Python virtual environment (pymavlink lives here)
+ mav_hunter/
+    px4_attack_cli.py     # Aggressive MAVLink payload script
+    hunter_listener.py    # Passive detector + payload launcher
+    logs/                 # Logs each event & payload outcome
 ```
 
 ---
 
-## 🔧 Setup Instructions
+##  Setup Instructions
 
 ### 1. Create Directories
 ```bash
@@ -63,7 +63,7 @@ Watch for:
 
 ---
 
-## 🤖 Automation (Auto-Start on Boot)
+##  Automation (Auto-Start on Boot)
 
 ### 1. Create systemd Service
 ```bash
@@ -72,7 +72,7 @@ sudo nano /etc/systemd/system/mav_hunter.service
 Paste:
 ```ini
 [Unit]
-Description=SkyReaper MAVLink Listener
+Description=WRAITH MAVLink Listener
 After=network-online.target
 Wants=network-online.target
 
@@ -99,49 +99,49 @@ sudo systemctl start mav_hunter.service
 ```bash
 sudo reboot
 ```
-Your Pi is now a self-starting SkyReaper node.
+Your Pi is now a self-starting WRAITH node.
 
 ---
 
-## 🧪 Testing With QGroundControl
+##  Testing With QGroundControl
 - Setup a UDP link in QGC:
   - **Port:** `14551` (QGC)
   - **Server address:** `<Pi_IP>:14550`
 - Start QGC *after* the drone/flight controller is live
 - QGC will forward MAVLink heartbeats to the Pi
-- SkyReaper logs and executes automatically
+- WRAITH logs and executes automatically
 
 ---
 
-## 📸 Documentation
-### 📷 Screenshots
+##  Documentation
+###  Screenshots
 1. Virtualenv activated on Pi: `20250418_002425.jpg`
 2. Listener script launched: `20250418_002505.jpg`
 3. Payloads running: `20250418_002538.jpg`
 4. QGC link config: `20250418_002559.jpg`
 5. MAVLink flow confirmed: `20250418_002559.jpg`
 
-### 🎥 Execution Video
+###  Execution Video
 **Filename:** `20250418_002606.mp4`
-**Content:** QGroundControl linking → MAVLink traffic sent → SkyReaper logs and attacks
+**Content:** QGroundControl linking  MAVLink traffic sent  WRAITH logs and attacks
 
 ---
 
-## 💀 Naming
-**SkyReaper** was chosen for:
+##  Naming
+**WRAITH** was chosen for:
 - Tactical tone
 - Stickiness
 - Immediate relevance to drone interdiction
 
 Other upcoming builds:
-- **WRAITH** – Silent interdiction, filtered payloads
-- **DRONEEATER** – Maximalist payload flooder
-- **BlackICARUS** – Spoof-based navigation disruptor
-- **VULTURE** – Tracker/logging-only recon node
+- **WRAITH** - Silent interdiction, filtered payloads
+- **DRONEEATER** - Maximalist payload flooder
+- **BlackICARUS** - Spoof-based navigation disruptor
+- **VULTURE** - Tracker/logging-only recon node
 
 ---
 
-## 🛡️ Future Upgrades
+##  Future Upgrades
 - Add webhook alerts (Discord, Slack)
 - Target filtering (e.g., only PX4, only > System ID 0)
 - Dynamic GPS spoofing / waypoint injection
@@ -149,8 +149,8 @@ Other upcoming builds:
 
 ---
 
-## ⚠️ Disclaimer
-SkyReaper is built for testing, educational, and authorized red team operations **only**. Unauthorized use against civilian or commercial drones is a federal offense under FCC/FAA regulations.
+##  Disclaimer
+WRAITH is built for testing, educational, and authorized red team operations **only**. Unauthorized use against civilian or commercial drones is a federal offense under FCC/FAA regulations.
 
 Stay ethical. Train smart. Fly safe.
 
