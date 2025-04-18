@@ -134,7 +134,6 @@ Your Pi is now a self-starting WRAITH node.
 - Immediate relevance to drone interdiction
 
 Other upcoming builds:
-- **WRAITH** - Silent interdiction, filtered payloads
 - **DRONEEATER** - Maximalist payload flooder
 - **BlackICARUS** - Spoof-based navigation disruptor
 - **VULTURE** - Tracker/logging-only recon node
