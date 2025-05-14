@@ -1,3 +1,4 @@
+![WRAITH Banner](A_banner_for_a_project_named_WRAITH_is_displayed_i.png)
 
 # WRAITH  
 **Wireless Reconnaissance & Autonomous Interdiction Terminal Hub**
