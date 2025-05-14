@@ -1,0 +1,3 @@
+
+[2025-05-14 13:08:44] Heartbeat detected: System ID 2, Component ID 1
+[2025-05-14 13:08:45] Simulated payload execution: reboot + GPS spoof
