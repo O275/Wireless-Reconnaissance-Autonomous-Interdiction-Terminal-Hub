@@ -1,4 +1,4 @@
-![WRAITH Banner](A_banner_for_a_project_named_WRAITH_is_displayed_i.png)
+![WRAITH Banner](WRAITH_Github_project_banner.png)
 
 # WRAITH  
 **Wireless Reconnaissance & Autonomous Interdiction Terminal Hub**
