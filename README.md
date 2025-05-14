@@ -1,75 +1,76 @@
-# WRAITH
-Autonomous MAVLink Drone Interdiction System
 
-**WRAITH** is a Raspberry Pi 5-powered autonomous MAVLink hunter-killer platform. It passively listens for drone telemetry and command traffic (MAVLink protocol), then triggers payloads on detection--executing GPS spoofing, mode spamming, and forced reboot injections against PX4-based flight controllers.
-
-![WRAITH Running in Terminal](../media/20250418_002425.jpg)
-![Script Execution Start](../media/20250418_002505.jpg)
-![Payload Trigger in Action](../media/20250418_002538.jpg)
-![PX4 Comm Link Setup in QGC](../media/20250418_002559.jpg)
-![MAVLink Packet Flow Confirmed](../media/20250418_002559.jpg)
+# WRAITH  
+**Wireless Reconnaissance & Autonomous Interdiction Terminal Hub**
 
 ---
 
-##  Features
+### 📡 Overview
+
+**WRAITH** is a research-oriented, field-deployable tool designed to **highlight risks associated with unencrypted UAV telemetry links** that use the MAVLink protocol. It passively monitors for MAVLink heartbeat messages and, upon detection, can autonomously execute predefined scripts for simulation or training purposes in explicitly authorized environments.
+
+WRAITH was developed to support ethical security research, red team training, and system hardening exercises where telemetry encryption is absent or weak. It does not interact with encrypted traffic, does not perform denial-of-service attacks, and does not target commercial systems.
+
+---
+
+### 🧰 Core Features
+
 - Passive MAVLink heartbeat detection
-- CLI-based attack engine (`px4_attack_cli.py`)
-- GPS spoofing, reboot, and mode-spam payloads
-- Logs all detections with timestamped `.log` files
-- Fully headless operation
-- Persistent `systemd` automation
-- Runs in isolated Python virtual environment
+- Autonomous payload scripting (via Python)
+- Real-time .log file creation for event tracking
+- Headless operation with systemd auto-start
+- Discord webhook integration for push alerts
+- Runs within Python virtual environment for isolation
 
 ---
 
-##  Project Structure
+### 🗂️ Project Structure
+
 ```
-/home/kali/
- mav_env/                  # Python virtual environment (pymavlink lives here)
- mav_hunter/
-    px4_attack_cli.py     # Aggressive MAVLink payload script
-    hunter_listener.py    # Passive detector + payload launcher
-    logs/                 # Logs each event & payload outcome
+~/mav_env/              # Python virtual environment
+~/mav_hunter/
+├── px4_attack_cli.py   # Optional CLI payload launcher
+├── hunter_listener.py  # Passive scanner + trigger engine
+└── logs/               # Timestamped log output
 ```
 
 ---
 
-##  Setup Instructions
+### 🛠️ Setup Instructions
 
-### 1. Create Directories
+#### Requirements
+- Raspberry Pi 5
+- Kali Linux
+- Python 3.9+
+- Wi-Fi adapter (e.g., Panda PAU09, Ralink RT5572)
+
+#### Environment Setup
+
 ```bash
 mkdir -p ~/mav_hunter/logs
-```
-
-### 2. Create Python Virtual Environment
-```bash
 python3 -m venv ~/mav_env
 source ~/mav_env/bin/activate
-pip install pymavlink
+pip install pymavlink requests
 ```
 
-### 3. Drop Scripts
-Save `px4_attack_cli.py` and `hunter_listener.py` in `~/mav_hunter/`
+Place your `.py` files in `~/mav_hunter/`.
 
-### 4. Manual Test Run
+---
+
+### 🧪 Manual Run
+
 ```bash
 source ~/mav_env/bin/activate
 python3 ~/mav_hunter/hunter_listener.py
 ```
-Watch for:
-- Heartbeat detection
-- Payload execution
-- New log file in `~/mav_hunter/logs/`
+
+Logs are saved in `~/mav_hunter/logs/` on detection.
 
 ---
 
-##  Automation (Auto-Start on Boot)
+### ⚙️ Auto-Start with systemd
 
-### 1. Create systemd Service
-```bash
-sudo nano /etc/systemd/system/mav_hunter.service
-```
-Paste:
+Create `/etc/systemd/system/mav_hunter.service`:
+
 ```ini
 [Unit]
 Description=WRAITH MAVLink Listener
@@ -88,74 +89,60 @@ RestartSec=5
 WantedBy=multi-user.target
 ```
 
-### 2. Enable Service
+Enable and start:
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable mav_hunter.service
 sudo systemctl start mav_hunter.service
 ```
 
-### 3. Reboot Test
-```bash
-sudo reboot
-```
-Your Pi is now a self-starting WRAITH node.
+---
+
+### 🧪 Testing with QGroundControl
+
+- Set up a UDP link in QGroundControl:
+  - Port: 14551
+  - Target: `<Your Pi IP>:14550`
+- Ensure PX4-based system is transmitting telemetry
+- WRAITH will log heartbeat and trigger response
+- Discord notifications will be sent (if configured)
 
 ---
 
-##  Testing With QGroundControl
-- Setup a UDP link in QGC:
-  - **Port:** `14551` (QGC)
-  - **Server address:** `<Pi_IP>:14550`
-- Start QGC *after* the drone/flight controller is live
-- QGC will forward MAVLink heartbeats to the Pi
-- WRAITH logs and executes automatically
+### 📸 Screenshots
+
+![Virtualenv Activated](media/20250418_002425.jpg)  
+![Script Running](media/20250418_002505.jpg)  
+![Payloads Executing](media/20250418_002538.jpg)
 
 ---
 
-##  Documentation
-###  Screenshots
-1. Virtualenv activated on Pi: `20250418_002425.jpg`
-2. Listener script launched: `20250418_002505.jpg`
-3. Payloads running: `20250418_002538.jpg`
-4. QGC link config: `20250418_002559.jpg`
-5. MAVLink flow confirmed: `20250418_002559.jpg`
+### 🚧 Future Upgrades
 
-###  Execution Video
-**Filename:** `20250418_002606.mp4`
-**Content:** QGroundControl linking  MAVLink traffic sent  WRAITH logs and attacks
+- Target filtering (system ID/firmware type)
+- Configurable payload delays and conditions
+- Optional Slack/Mattermost integrations
+- Expanded GPS spoof testing (in simulation only)
 
 ---
 
-##  Naming
-**WRAITH** was chosen for:
-- Tactical tone
-- Stickiness
-- Immediate relevance to drone interdiction
+### ⚠️ Legal + Ethical Disclaimer
 
-Other upcoming builds:
-- **DRONEEATER** - Maximalist payload flooder
-- **BlackICARUS** - Spoof-based navigation disruptor
-- **VULTURE** - Tracker/logging-only recon node
+WRAITH is intended for **authorized security research, academic training, and red team simulation** only.  
+It must **never** be used to target, interfere with, or disrupt real-world systems unless you have **explicit, written permission** from the system owner.
+
+Misuse may violate **local, state, or federal laws**, including U.S. FCC and FAA regulations.
+
+Use responsibly. Train ethically. Document legally.
 
 ---
 
-##  Future Upgrades
-- Add webhook alerts (Discord, Slack)
-- Target filtering (e.g., only PX4, only > System ID 0)
-- Dynamic GPS spoofing / waypoint injection
-- Radio & LTE traffic mirroring
+### 📎 Attribution
 
----
+WRAITH uses [pymavlink](https://github.com/ArduPilot/pymavlink), developed by the ArduPilot and Dronecode communities.  
+This project is not affiliated with or endorsed by PX4, Dronecode, ArduPilot, or any other organization.
 
-##  Disclaimer
-WRAITH is built for testing, educational, and authorized red team operations **only**. Unauthorized use against civilian or commercial drones is a federal offense under FCC/FAA regulations.
+Linux OS provided by [Kali Linux](https://www.kali.org/).  
+Created and maintained by Ryan Schwarz.
 
-Stay ethical. Train smart. Fly safe.
-
----
-
-**Developed by:** Ryan Schwarz
-**Build Date:** April 18, 2025
-**System:** Raspberry Pi 5 (Kali Linux)
-**Mission Role:** Autonomous Drone Defense Node
+Licensed under the [MIT License](LICENSE).
