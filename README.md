@@ -7,9 +7,9 @@
 
 ### 📡 Overview
 
-**WRAITH** is a research-oriented, field-deployable tool designed to **highlight risks associated with unencrypted UAV telemetry links** that use the MAVLink protocol. It passively monitors for MAVLink heartbeat messages and, upon detection, can autonomously execute predefined scripts for simulation or training purposes in explicitly authorized environments.
+**WRAITH** is a research-oriented, field-deployable tool designed to highlight risks associated with unencrypted UAV telemetry links that use the MAVLink protocol. It passively monitors for MAVLink heartbeat messages and, upon detection, can autonomously execute predefined scripts for simulation or training purposes in explicitly authorized environments.
 
-WRAITH was developed to support ethical security research, red team training, and system hardening exercises where telemetry encryption is absent or weak. It does not interact with encrypted traffic, does not perform denial-of-service attacks, and does not target commercial systems.
+WRAITH was developed to support ethical security research, red team training, and system hardening exercises where telemetry encryption is absent or weak. It does not interact with encrypted traffic, perform denial-of-service attacks, or target commercial systems.
 
 ---
 
@@ -19,82 +19,49 @@ WRAITH was developed to support ethical security research, red team training, an
 - Autonomous payload scripting (via Python)
 - Real-time .log file creation for event tracking
 - Headless operation with systemd auto-start
-- Discord webhook integration for push alerts
+- Discord webhook integration for push alerts (optional)
 - Runs within Python virtual environment for isolation
 
 ---
 
-### 🗂️ Project Structure
+### 📁 Project Structure
 
 ```
-~/mav_env/              # Python virtual environment
-~/mav_hunter/
-├── px4_attack_cli.py   # Optional CLI payload launcher
-├── hunter_listener.py  # Passive scanner + trigger engine
-└── logs/               # Timestamped log output
+/wraith/
+├── launch_wraith.py                # Simple launcher script
+├── requirements.txt                # Python dependencies
+└── mav_hunter/
+    ├── hunter_listener.py          # Main detection and logging engine
+    ├── mavlink_payload_cli.py      # CLI tool for simulating payloads
+    └── logs/
+        └── sample_log.txt          # Example output
 ```
 
 ---
 
-### 🛠️ Setup Instructions
+### ⚙️ Setup & Usage
 
-#### Requirements
-- Raspberry Pi 5
-- Kali Linux
-- Python 3.9+
-- Wi-Fi adapter (e.g., Panda PAU09, Ralink RT5572)
-
-#### Environment Setup
+#### Install Python Dependencies
 
 ```bash
-mkdir -p ~/mav_hunter/logs
-python3 -m venv ~/mav_env
-source ~/mav_env/bin/activate
-pip install pymavlink requests
+pip install -r requirements.txt
 ```
 
-Place your `.py` files in `~/mav_hunter/`.
-
----
-
-### 🧪 Manual Run
+#### Run the Listener
 
 ```bash
-source ~/mav_env/bin/activate
-python3 ~/mav_hunter/hunter_listener.py
+python3 launch_wraith.py
 ```
 
-Logs are saved in `~/mav_hunter/logs/` on detection.
-
----
-
-### ⚙️ Auto-Start with systemd
-
-Create `/etc/systemd/system/mav_hunter.service`:
-
-```ini
-[Unit]
-Description=WRAITH MAVLink Listener
-After=network-online.target
-Wants=network-online.target
-
-[Service]
-Type=simple
-User=kali
-WorkingDirectory=/home/kali/mav_hunter
-ExecStart=/home/kali/mav_env/bin/python3 /home/kali/mav_hunter/hunter_listener.py
-Restart=on-failure
-RestartSec=5
-
-[Install]
-WantedBy=multi-user.target
+This will start passive monitoring. Logs will appear in:
+```
+~/mav_hunter/logs/
 ```
 
-Enable and start:
+#### Simulate Payloads (Dry Run)
+
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl enable mav_hunter.service
-sudo systemctl start mav_hunter.service
+python3 mav_hunter/mavlink_payload_cli.py --spoof --reboot --dry-run
 ```
 
 ---
@@ -104,26 +71,28 @@ sudo systemctl start mav_hunter.service
 - Set up a UDP link in QGroundControl:
   - Port: 14551
   - Target: `<Your Pi IP>:14550`
-- Ensure PX4-based system is transmitting telemetry
-- WRAITH will log heartbeat and trigger response
-- Discord notifications will be sent (if configured)
+- Start a drone or simulator sending telemetry
+- WRAITH will log heartbeats and simulate payloads
 
 ---
 
 ### 📸 Screenshots
 
-![Virtualenv Activated](media/20250418_002425.jpg)  
-![Script Running](media/20250418_002505.jpg)  
-![Payloads Executing](media/20250418_002538.jpg)
+> _Replace these with actual clean screenshots when available_
+
+- Virtualenv activated
+- Listener script running
+- Simulated payloads triggered
+- Discord alert example (optional)
 
 ---
 
 ### 🚧 Future Upgrades
 
 - Target filtering (system ID/firmware type)
-- Configurable payload delays and conditions
-- Optional Slack/Mattermost integrations
-- Expanded GPS spoof testing (in simulation only)
+- Payload delays and conditional triggers
+- MAVLink over serial UART
+- UI dashboard for log parsing
 
 ---
 
