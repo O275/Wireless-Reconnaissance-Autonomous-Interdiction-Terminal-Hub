@@ -24,21 +24,6 @@ WRAITH was developed to support ethical security research, red team training, an
 
 ---
 
-### 📁 Project Structure
-
-```
-/wraith/
-├── launch_wraith.py                # Simple launcher script
-├── requirements.txt                # Python dependencies
-└── mav_hunter/
-    ├── hunter_listener.py          # Main detection and logging engine
-    ├── mavlink_payload_cli.py      # CLI tool for simulating payloads
-    └── logs/
-        └── sample_log.txt          # Example output
-```
-
----
-
 ### ⚙️ Setup & Usage
 
 #### Install Python Dependencies
