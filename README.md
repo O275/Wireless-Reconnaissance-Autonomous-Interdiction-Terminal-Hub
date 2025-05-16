@@ -76,26 +76,6 @@ python3 mav_hunter/mavlink_payload_cli.py --spoof --reboot --dry-run
 
 ---
 
-### 📸 Screenshots
-
-> _Replace these with actual clean screenshots when available_
-
-- Virtualenv activated
-- Listener script running
-- Simulated payloads triggered
-- Discord alert example (optional)
-
----
-
-### 🚧 Future Upgrades
-
-- Target filtering (system ID/firmware type)
-- Payload delays and conditional triggers
-- MAVLink over serial UART
-- UI dashboard for log parsing
-
----
-
 ### ⚠️ Legal + Ethical Disclaimer
 
 WRAITH is intended for **authorized security research, academic training, and red team simulation** only.  
